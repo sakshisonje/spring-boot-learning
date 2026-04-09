@@ -1,6 +1,7 @@
 HELP.md
+.gitignore
 target/
-.mvn/wrapper/maven-wrapper.jar
+week-02-EmployeeDepartment/.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
