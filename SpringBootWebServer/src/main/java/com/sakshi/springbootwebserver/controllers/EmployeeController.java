@@ -23,4 +23,16 @@ public class EmployeeController {
                                   @RequestParam(required = false) String sortBy){
          return "Hi age   "+age+"    "+sortBy;
     }
+
+    /// we cannot directly hit the post request to the browser
+    @PostMapping
+    public String createNewEmployee(){
+        return "Hello POST request";
+    }
+
+    @PutMapping
+    String updateEmployeeId(){
+        return "Put mapping";
+    }
+
 }
