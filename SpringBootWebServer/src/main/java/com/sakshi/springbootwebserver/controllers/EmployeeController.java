@@ -26,8 +26,9 @@ public class EmployeeController {
 
     /// we cannot directly hit the post request to the browser
     @PostMapping
-    public String createNewEmployee(){
-        return "Hello POST request";
+    public EmployeeDTO createNewEmployee(@RequestBody EmployeeDTO inputEmployee){
+        inputEmployee.setId(100L);
+        return inputEmployee;
     }
 
     @PutMapping
