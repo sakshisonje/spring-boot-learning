@@ -3,6 +3,7 @@ package com.sakshi.springbootwebserver.controllers;
 import com.sakshi.springbootwebserver.dto.EmployeeDTO;
 import com.sakshi.springbootwebserver.entities.EmployeeEntity;
 import com.sakshi.springbootwebserver.repositeries.EmployeeRepository;
+import com.sakshi.springbootwebserver.services.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -17,27 +18,27 @@ public class EmployeeController {
 //        return "This is the secret message : Getmapping is implemented";
 //    }
 
-    private final EmployeeRepository employeeRepository;
+    private final EmployeeService employeeService;
 
-    public EmployeeController(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
 
     @GetMapping("/{employeeId}")
-    public EmployeeEntity getEmployeeById(@PathVariable(name="employeeId") Long id){
-        return employeeRepository.findById(id).orElse(null);
+    public EmployeeDTO getEmployeeById(@PathVariable(name="employeeId") Long id){
+        return employeeService.getEmployeeById(id);
     }
     @GetMapping
-    public List<EmployeeEntity> getAllEmployees(@RequestParam(required = false, name = "inputAge") Integer age,
+    public List<EmployeeDTO> getAllEmployees(@RequestParam(required = false, name = "inputAge") Integer age,
                                 @RequestParam(required = false) String sortBy){
-         return employeeRepository.findAll();
+         return employeeService.getAllEmployees();
     }
 
     /// we cannot directly hit the post request to the browser
     @PostMapping
-    public EmployeeEntity createNewEmployee(@RequestBody EmployeeEntity inputEmployee){
+    public EmployeeDTO createNewEmployee(@RequestBody EmployeeDTO inputEmployee){
 //        inputEmployee.setId(100L);
-        return employeeRepository.save(inputEmployee);
+        return employeeService.createNewEmployee(inputEmployee);
     }
 
     @PutMapping
