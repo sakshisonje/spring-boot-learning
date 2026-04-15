@@ -1,10 +1,14 @@
 package com.sakshi.springbootwebserver.entities;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-
+import lombok.*;
 import java.time.LocalDate;
 
 @Entity  //Java class to be converted into Table
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name="employees")
 public class EmployeeEntity {
 
