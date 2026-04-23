@@ -38,9 +38,9 @@ public class EmployeeController {
     }
 
     @ExceptionHandler(NoSuchElementException.class)
-    public String handleEmployeeNotFound(NoSuchElementException exception)
+    public ResponseEntity<String> handleEmployeeNotFound(NoSuchElementException exception)
     {
-        return  "Employee was Not Found";
+        return new ResponseEntity<>("Employee Not Found",HttpStatus.NOT_FOUND);
     }
 
     @GetMapping
