@@ -49,29 +49,27 @@ public class EmployeeService {
     }
 
     public EmployeeDTO updateEmployeeById(Long employeeId, EmployeeDTO employeeDTO) {
-        boolean exists=isExistsByEmployeeId((employeeId));
-        if(!exists) throw new ResourceNotFoundException("Employee not Found with ID : " + employeeId);
+        isExistsByEmployeeId(employeeId);
         EmployeeEntity employeeEntity=modelMapper.map(employeeDTO,EmployeeEntity.class);
         employeeEntity.setId(employeeId);
         EmployeeEntity savedEmployeeEntity=employeeRepository.save(employeeEntity);
         return modelMapper.map(savedEmployeeEntity, EmployeeDTO.class);
     }
-    public boolean isExistsByEmployeeId(Long employeeId)
+    public void isExistsByEmployeeId(Long employeeId)
     {
-        return employeeRepository.existsById(employeeId);
+        boolean exists=employeeRepository.existsById(employeeId);
+        if(!exists) throw new ResourceNotFoundException("Employee Not Found with id: "+employeeId);
+
     }
 
     public boolean deleteEmployeeById(Long employeeId) {
-        boolean exists=isExistsByEmployeeId(employeeId);
-        if(!exists) throw new ResourceNotFoundException("Employee Not Found with id: "+employeeId);
+        isExistsByEmployeeId(employeeId);
         employeeRepository.deleteById(employeeId);
         return true;
     }
 
     public EmployeeDTO updatePartialEmployeeId(Long employeeId, Map<String, Object> updates) {
-        boolean exists=isExistsByEmployeeId(employeeId);
-        if(!exists) return null;
-
+        isExistsByEmployeeId(employeeId);
         EmployeeEntity employeeEntity=employeeRepository.findById(employeeId).get();
         updates.forEach((field,value)->{
             Field fieldTobeUpdated= ReflectionUtils.findField(EmployeeEntity.class,field);
