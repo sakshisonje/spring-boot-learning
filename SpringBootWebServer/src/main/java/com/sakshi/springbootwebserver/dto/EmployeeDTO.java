@@ -27,7 +27,8 @@ public class EmployeeDTO {
     private Integer age;
 
     @NotBlank(message = "Role of the Employee cannot be blank")
-    @Pattern(regexp = "^(ADMIN|USER)$",message = "Role must be USER or ADMIN")
+//    @Pattern(regexp = "^(ADMIN|USER)$",message = "Role must be USER or ADMIN")
+
     private String role;
 
     @NotNull @Positive(message = "Salary of Employee should be Positive")
