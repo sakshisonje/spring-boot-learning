@@ -35,7 +35,9 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiError> handleInputValidationErrors(MethodArgumentNotValidException exception){
-        List<String> errors=exception.getBindingResult().getAllErrors()
+        List<String> errors=exception
+                .getBindingResult()
+                .getAllErrors()
                 .stream()
                 .map(error-> error.getDefaultMessage())
                 .collect(Collectors.toList());
