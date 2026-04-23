@@ -34,7 +34,7 @@ public class EmployeeController {
     public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable(name="employeeId") Long id){
         Optional<EmployeeDTO> employeeDTO=employeeService.getEmployeeById(id);
         return employeeDTO.map(employeeDTO1 -> ResponseEntity.ok(employeeDTO1))
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(()->new NoSuchElementException(("Employee Not Found")));
     }
 
     @ExceptionHandler(NoSuchElementException.class)
