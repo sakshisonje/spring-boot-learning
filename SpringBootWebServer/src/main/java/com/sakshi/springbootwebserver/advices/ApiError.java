@@ -3,6 +3,7 @@ package com.sakshi.springbootwebserver.advices;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
+import java.util.List;
 
 
 @Data
@@ -10,4 +11,5 @@ import org.springframework.http.HttpStatus;
 public class ApiError {
     private HttpStatus status;
     private String message;
+    private List<String> subErrors;
 }
