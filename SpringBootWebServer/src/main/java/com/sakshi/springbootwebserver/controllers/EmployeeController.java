@@ -2,6 +2,7 @@ package com.sakshi.springbootwebserver.controllers;
 
 import com.sakshi.springbootwebserver.dto.EmployeeDTO;
 import com.sakshi.springbootwebserver.entities.EmployeeEntity;
+import com.sakshi.springbootwebserver.exception.ResourceNotFoundException;
 import com.sakshi.springbootwebserver.repositeries.EmployeeRepository;
 import com.sakshi.springbootwebserver.services.EmployeeService;
 import jakarta.validation.Valid;
@@ -34,7 +35,7 @@ public class EmployeeController {
     public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable(name="employeeId") Long id){
         Optional<EmployeeDTO> employeeDTO=employeeService.getEmployeeById(id);
         return employeeDTO.map(employeeDTO1 -> ResponseEntity.ok(employeeDTO1))
-                .orElseThrow(()->new NoSuchElementException(("Employee Not Found")));
+                .orElseThrow(()->new ResourceNotFoundException(("Employee Not Found with id: "+id)));
     }
 
     @GetMapping

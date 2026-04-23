@@ -1,5 +1,6 @@
 package com.sakshi.springbootwebserver.advices;
 
+import com.sakshi.springbootwebserver.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,9 +11,12 @@ import java.util.NoSuchElementException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<ApiError> handleResourceNotFound(NoSuchElementException exception)
+    public ResponseEntity<ApiError> handleResourceNotFound(ResourceNotFoundException exception)
     {
-        ApiError apiError=ApiError.builder().status(HttpStatus.NOT_FOUND).message("Resource Not Found").build();
+        ApiError apiError=ApiError.builder()
+                .status(HttpStatus.NOT_FOUND)
+                .message(exception.getMessage())
+                .build();
         return new ResponseEntity<>(apiError,HttpStatus.NOT_FOUND);
     }
 }
