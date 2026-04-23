@@ -9,7 +9,6 @@ import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<ApiError> handleResourceNotFound(NoSuchElementException exception)
     {
