@@ -1,6 +1,7 @@
 package com.sakshi.springbootwebserver.annotations;
 
 
+import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
 import java.lang.annotation.ElementType;
@@ -10,6 +11,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD,ElementType.PARAMETER})
+@Constraint(validatedBy={EmployeeRoleValidator.class})
 public @interface EmployeeRoleValidation {
 
     String message() default "The Role of the employee can be USER | ADMIN";
