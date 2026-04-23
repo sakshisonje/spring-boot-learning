@@ -49,6 +49,8 @@ public class EmployeeService {
     }
 
     public EmployeeDTO updateEmployeeById(Long employeeId, EmployeeDTO employeeDTO) {
+        boolean exists=isExistsByEmployeeId((employeeId));
+        if(!exists) throw new ResourceNotFoundException("Employee not Found with ID : " + employeeId);
         EmployeeEntity employeeEntity=modelMapper.map(employeeDTO,EmployeeEntity.class);
         employeeEntity.setId(employeeId);
         EmployeeEntity savedEmployeeEntity=employeeRepository.save(employeeEntity);

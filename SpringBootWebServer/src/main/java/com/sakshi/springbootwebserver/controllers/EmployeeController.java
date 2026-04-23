@@ -35,8 +35,7 @@ public class EmployeeController {
     public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable(name="employeeId") Long id){
         Optional<EmployeeDTO> employeeDTO=employeeService.getEmployeeById(id);
         return employeeDTO
-                .map(employeeDTO1 ->
-                 ResponseEntity.ok(employeeDTO1))
+                .map(employeeDTO1 -> ResponseEntity.ok(employeeDTO1))
                 .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: "+id));
     }
 
@@ -55,7 +54,7 @@ public class EmployeeController {
     }
     @PutMapping(path = "/{employeeId}")
     public ResponseEntity<EmployeeDTO> updateEmployeeId(@RequestBody @Valid EmployeeDTO employeeDTO, @PathVariable Long employeeId){
-        return  ResponseEntity.ok(employeeService.updateEmployeeById(employeeId, employeeDTO));
+        return ResponseEntity.ok(employeeService.updateEmployeeById(employeeId, employeeDTO));
     }
 
     @DeleteMapping(path = "/{employeeId}")
