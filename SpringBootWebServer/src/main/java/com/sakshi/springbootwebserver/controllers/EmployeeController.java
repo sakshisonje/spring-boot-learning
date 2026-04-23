@@ -4,11 +4,13 @@ import com.sakshi.springbootwebserver.dto.EmployeeDTO;
 import com.sakshi.springbootwebserver.entities.EmployeeEntity;
 import com.sakshi.springbootwebserver.repositeries.EmployeeRepository;
 import com.sakshi.springbootwebserver.services.EmployeeService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path="/employees")
@@ -25,14 +27,17 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("/{employeeId}")
-    public EmployeeDTO getEmployeeById(@PathVariable(name="employeeId") Long id){
-        return employeeService.getEmployeeById(id);
+    @GetMapping(path = "/{employeeId}")
+    public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable(name="employeeId") Long id){
+        Optional<EmployeeDTO> employeeDTO=employeeService.getEmployeeById(id);
+        return employeeDTO.map(employeeDTO1 -> ResponseEntity.ok(employeeDTO1))
+                .orElse(ResponseEntity.notFound().build());
     }
+
     @GetMapping
-    public List<EmployeeDTO> getAllEmployees(@RequestParam(required = false, name = "inputAge") Integer age,
+    public ResponseEntity<List<EmployeeDTO>> getAllEmployees(@RequestParam(required = false, name = "inputAge") Integer age,
                                 @RequestParam(required = false) String sortBy){
-         return employeeService.getAllEmployees();
+         return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 
     /// we cannot directly hit the post request to the browser
