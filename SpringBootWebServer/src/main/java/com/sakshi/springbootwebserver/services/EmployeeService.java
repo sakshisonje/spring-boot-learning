@@ -2,6 +2,7 @@ package com.sakshi.springbootwebserver.services;
 
 import com.sakshi.springbootwebserver.dto.EmployeeDTO;
 import com.sakshi.springbootwebserver.entities.EmployeeEntity;
+import com.sakshi.springbootwebserver.exception.ResourceNotFoundException;
 import com.sakshi.springbootwebserver.repositeries.EmployeeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -60,7 +61,7 @@ public class EmployeeService {
 
     public boolean deleteEmployeeById(Long employeeId) {
         boolean exists=isExistsByEmployeeId(employeeId);
-        if(!exists) return false;
+        if(!exists) throw new ResourceNotFoundException("Employee Not Found with id: "+employeeId);
         employeeRepository.deleteById(employeeId);
         return true;
     }

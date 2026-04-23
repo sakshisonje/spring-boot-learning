@@ -1,5 +1,7 @@
 package com.sakshi.springbootwebserver.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sakshi.springbootwebserver.annotations.EmployeeRoleValidation;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,32 +17,37 @@ import java.time.LocalDate;
 public class EmployeeDTO {
 
     private Long id;
-    @NotBlank(message = "Name cannot be blank")
-    @Size(min=3, max=10, message="Number of characters should be in range : 3 to 10")
+
+    @NotBlank(message = "Name of the employee cannot be blank")
+    @Size(min = 3, max = 10, message = "Number of characters in name should be in the range: [3, 10]")
     private String name;
 
-    @Email(message = "Please enter the Valid Email Id")
+    @NotBlank(message = "Email of the employee cannot be blank")
+    @Email(message = "Email should be a valid email")
     private String email;
 
-    @Max(value = 70, message = "Age of Employee cannot be greater than 70")
-    @Min(value = 19, message = "Age of Employee cannot be lesser than 19")
+    @NotNull(message = "Age of the employee cannot be blank")
+    @Max(value = 80, message = "Age of Employee cannot be greater than 80")
+    @Min(value = 18, message = "Age of Employee cannot be less than 18")
     private Integer age;
 
-    @NotBlank(message = "Role of the Employee cannot be blank")
-//    @Pattern(regexp = "^(ADMIN|USER)$",message = "Role must be USER or ADMIN")
+    @NotBlank(message = "Role of the employee cannot be blank")
+//    @Pattern(regexp = "^(ADMIN|USER)$", message = "Role of Employee can either be USER or ADMIN")
+    @EmployeeRoleValidation
+    private String role; //ADMIN, USER
 
-    private String role;
-
-    @NotNull @Positive(message = "Salary of Employee should be Positive")
-    @Digits(integer = 6, fraction=2,message="Salary can be in the form of XXXXX.XX")
+    @NotNull(message = "Salary of Employee should be not null")
+    @Positive(message = "Salary of Employee should be positive")
+    @Digits(integer = 6, fraction = 2, message = "The salary can be in the form XXXXX.YY")
     @DecimalMax(value = "100000.99")
-    @DecimalMin(value = "1000.22")
+    @DecimalMin(value = "100.50")
     private Double salary;
 
-    @PastOrPresent(message = "Date should be past or present")
+    @PastOrPresent(message = "DateOfJoining field in Employee cannot be in the future")
     private LocalDate dateOfJoining;
 
     @AssertTrue(message = "Employee should be active")
+    @JsonProperty("isActive")
     private Boolean isActive;
 
 }
