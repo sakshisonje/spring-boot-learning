@@ -1,14 +1,19 @@
 package com.sakshi.springbootwebserver.services;
 
 import com.sakshi.springbootwebserver.dto.DepartmentDTO;
+import com.sakshi.springbootwebserver.dto.EmployeeDTO;
 import com.sakshi.springbootwebserver.entities.DepartmentEntity;
+import com.sakshi.springbootwebserver.entities.EmployeeEntity;
 import com.sakshi.springbootwebserver.exception.ResourceNotFoundException;
 import com.sakshi.springbootwebserver.repositeries.DepartmentRepository;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -61,5 +66,19 @@ public class DepartmentService {
         isExistsByDepartmentId(departmentId);
         departmentRepository.deleteById(departmentId);
         return true;
+    }
+
+    public DepartmentDTO updatePartialDepartmentById(Long departmentId, Map<String,Object> updates) {
+        isExistsByDepartmentId(departmentId);
+        DepartmentEntity departmentEntity=departmentRepository.findById(departmentId).get();
+        updates.forEach((field,value)->{
+            Field fieldTobeUpdated= ReflectionUtils.findField(EmployeeEntity.class,field);
+            fieldTobeUpdated.setAccessible(true); //private fields use kar sakte
+            ReflectionUtils.setField(fieldTobeUpdated, departmentEntity,value);
+
+        });
+
+        return modelMapper.map(departmentRepository.save(departmentEntity), EmployeeDTO.class);
+
     }
 }

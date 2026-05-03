@@ -61,6 +61,8 @@ public class DepartmentController {
     public ResponseEntity<DepartmentDTO> updatePartialDepartment(@PathVariable Long departmentId,
                                                                  @RequestBody Map<String,Object> updates)
     {
-
+        DepartmentDTO updatePartialDepartment=departmentService.updatePartialDepartmentById(departmentId,updates);
+        if(updatePartialDepartment==null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(updatePartialDepartment);
     }
 }
