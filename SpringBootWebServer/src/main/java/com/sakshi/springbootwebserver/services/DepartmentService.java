@@ -78,7 +78,7 @@ public class DepartmentService {
 
         });
 
-        return modelMapper.map(departmentRepository.save(departmentEntity), EmployeeDTO.class);
+        return modelMapper.map(departmentRepository.save(departmentEntity), DepartmentDTO.class);
 
     }
 }
