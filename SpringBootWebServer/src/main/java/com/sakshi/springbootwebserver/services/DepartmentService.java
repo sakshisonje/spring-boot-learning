@@ -1,10 +1,10 @@
 package com.sakshi.springbootwebserver.services;
 
 import com.sakshi.springbootwebserver.dto.DepartmentDTO;
-import com.sakshi.springbootwebserver.dto.EmployeeDTO;
 import com.sakshi.springbootwebserver.entities.DepartmentEntity;
-import com.sakshi.springbootwebserver.entities.EmployeeEntity;
+import com.sakshi.springbootwebserver.exception.ResourceNotFoundException;
 import com.sakshi.springbootwebserver.repositeries.DepartmentRepository;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -35,5 +35,31 @@ public class DepartmentService {
         return departmentRepository.findById(id).map(
                 departmentEntity1 ->
                         modelMapper.map(departmentEntity1, DepartmentDTO.class));
+    }
+
+    public DepartmentDTO createNewDepartment(@Valid DepartmentDTO departmentDTO) {
+        DepartmentEntity toSaveEntity=modelMapper.map(departmentDTO, DepartmentEntity.class);
+        DepartmentEntity savedDepartment= departmentRepository.save(toSaveEntity);
+        return modelMapper.map(savedDepartment, DepartmentDTO.class);
+    }
+
+    public DepartmentDTO updateDepartmentById(@Valid DepartmentDTO departmentDTO, Long departmentId) {
+        isExistsByDepartmentId(departmentId);
+        DepartmentEntity departmentEntity=modelMapper.map(departmentDTO, DepartmentEntity.class);
+        departmentEntity.setId(departmentId);
+        DepartmentEntity updatedEmployeeEntity=departmentRepository.save(departmentEntity);
+        return modelMapper.map(updatedEmployeeEntity,DepartmentDTO.class);
+    }
+
+    private void isExistsByDepartmentId(Long departmentId) {
+        boolean exists=departmentRepository.existsById(departmentId);
+        if(!exists) throw new ResourceNotFoundException("Employee Not Found with id: "+departmentId);
+
+    }
+
+    public boolean deleteDepartmentById(Long departmentId) {
+        isExistsByDepartmentId(departmentId);
+        departmentRepository.deleteById(departmentId);
+        return true;
     }
 }
