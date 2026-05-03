@@ -1,12 +1,12 @@
 package com.sakshi.springbootwebserver.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sakshi.springbootwebserver.annotations.DepartmentTitleValidation;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDate;
 
@@ -23,6 +23,7 @@ public class DepartmentDTO {
     private String title;
 
     @AssertTrue(message = "Department must be active")
+    @JsonProperty("isActive")
     private Boolean isActive;
 
     @PastOrPresent

@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD,ElementType.PARAMETER})
 @Constraint(validatedBy={DepartmentValidator.class})
 public @interface DepartmentTitleValidation {
-    String message() default "The Title of the department can be Operations | Technology";
+    String message() default "The Title of the department can be IT | HR | Finance";
 
     Class<?>[] groups() default {};
 

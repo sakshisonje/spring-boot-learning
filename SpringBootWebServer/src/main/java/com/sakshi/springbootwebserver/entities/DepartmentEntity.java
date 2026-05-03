@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Data //getters and setters
 @NoArgsConstructor //Hibernate internally needs: default constructor
 @AllArgsConstructor //Hibernate internally needs: default constructor
-@Table(name="department")
+@Table(name="departments")
 public class DepartmentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -10,7 +10,7 @@ public class DepartmentValidator implements ConstraintValidator<DepartmentTitleV
     @Override
     public boolean isValid(String inputDepartment, ConstraintValidatorContext constraintValidatorContext) {
         if(inputDepartment==null) return false;
-        List<String> roles= List.of("Technology","Operations");
+        List<String> roles= List.of("IT","HR","Finance");
         return roles.contains(inputDepartment);
     }
 }
