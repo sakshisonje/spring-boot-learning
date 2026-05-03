@@ -8,14 +8,14 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Data //getters and setters
+@NoArgsConstructor //Hibernate internally needs: default constructor
+@AllArgsConstructor //Hibernate internally needs: default constructor
 @Table(name="department")
 public class DepartmentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     private String title;
     private Boolean isActive;
     private LocalDate createdAt;
