@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -68,17 +69,69 @@ public class DepartmentService {
         return true;
     }
 
-    public DepartmentDTO updatePartialDepartmentById(Long departmentId, Map<String,Object> updates) {
-        isExistsByDepartmentId(departmentId);
-        DepartmentEntity departmentEntity=departmentRepository.findById(departmentId).get();
-        updates.forEach((field,value)->{
-            Field fieldTobeUpdated= ReflectionUtils.findField(EmployeeEntity.class,field);
-            fieldTobeUpdated.setAccessible(true); //private fields use kar sakte
-            ReflectionUtils.setField(fieldTobeUpdated, departmentEntity,value);
+    public DepartmentDTO updatePartialDepartmentById(
+            Long departmentId,
+            Map<String, Object> updates) {
 
+        isExistsByDepartmentId(departmentId);
+
+        DepartmentEntity departmentEntity =
+                departmentRepository.findById(departmentId).get();
+
+        updates.forEach((field, value) -> {
+
+            // Prevent updating ID
+            if(field.equals("id")) {
+                throw new ResourceNotFoundException(
+                        "Id cannot be updated"
+                );
+            }
+
+            Field fieldToBeUpdated =
+                    ReflectionUtils.findField(
+                            DepartmentEntity.class,
+                            field
+                    );
+
+            // Field not found
+            if(fieldToBeUpdated == null) {
+                throw new ResourceNotFoundException(
+                        "Field not found: " + field
+                );
+            }
+
+            fieldToBeUpdated.setAccessible(true);
+
+            // Handle LocalDate conversion
+            if(fieldToBeUpdated.getType().equals(LocalDate.class)) {
+
+                LocalDate localDate =
+                        LocalDate.parse(value.toString());
+
+                ReflectionUtils.setField(
+                        fieldToBeUpdated,
+                        departmentEntity,
+                        localDate
+                );
+            }
+
+            // Normal fields
+            else {
+
+                ReflectionUtils.setField(
+                        fieldToBeUpdated,
+                        departmentEntity,
+                        value
+                );
+            }
         });
 
-        return modelMapper.map(departmentRepository.save(departmentEntity), DepartmentDTO.class);
+        DepartmentEntity savedDepartment =
+                departmentRepository.save(departmentEntity);
 
+        return modelMapper.map(
+                savedDepartment,
+                DepartmentDTO.class
+        );
     }
 }
