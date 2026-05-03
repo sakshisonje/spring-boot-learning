@@ -1,6 +1,7 @@
 package com.sakshi.springbootwebserver.controllers;
 
 import com.sakshi.springbootwebserver.dto.DepartmentDTO;
+import com.sakshi.springbootwebserver.exception.ResourceNotFoundException;
 import com.sakshi.springbootwebserver.services.DepartmentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,9 @@ public class DepartmentController {
     public ResponseEntity<DepartmentDTO> getDepartmentById(
             @PathVariable(name="departmentId") Long id){
         Optional<DepartmentDTO> departmentDTO= departmentService.getDepartmentById(id);
+        return departmentDTO
+                .map(departmentDTO1 -> ResponseEntity.ok(departmentDTO1))
+                .orElseThrow(()->new ResourceNotFoundException("Employee not found with id: "+id));
 
     }
 }

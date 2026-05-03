@@ -31,6 +31,9 @@ public class DepartmentService {
                 .collect(Collectors.toList());
     }
     public Optional<DepartmentDTO> getDepartmentById(Long id){
-
+        //department entity into department dto conversion through model mapper
+        return departmentRepository.findById(id).map(
+                departmentEntity1 ->
+                        modelMapper.map(departmentEntity1, DepartmentDTO.class));
     }
 }
