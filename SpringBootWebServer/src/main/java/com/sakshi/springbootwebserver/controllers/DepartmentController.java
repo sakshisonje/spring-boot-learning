@@ -50,14 +50,14 @@ public class DepartmentController {
         return ResponseEntity.ok(departmentService.updateDepartmentById(departmentDTO,departmentId));
     }
 
-    @DeleteMapping(path = "/{departmentId}/")
+    @DeleteMapping(path = "/{departmentId}")
     public ResponseEntity<Boolean> deleteDepartmentById(@PathVariable Long departmentId)
     {
         boolean gotDeleted=departmentService.deleteDepartmentById(departmentId);
         if(gotDeleted) return ResponseEntity.ok(true);
         return ResponseEntity.notFound().build();
     }
-    @PatchMapping(path = "/{departmentId}/")
+    @PatchMapping(path = "/{departmentId}")
     public ResponseEntity<DepartmentDTO> updatePartialDepartment(@PathVariable Long departmentId,
                                                                  @RequestBody Map<String,Object> updates)
     {
